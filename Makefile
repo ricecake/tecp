@@ -19,3 +19,6 @@ bin/%:
 	$(CC) $(LDFLAGS) $^ -o $@
 
 src/%.o: include/%.h
+
+tidy:
+	astyle -tyjnfpUr -k1 -A14 *.c *.h

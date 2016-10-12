@@ -5,6 +5,8 @@
 #include "util.h"
 
 int main() {
+	FILE *fp = fopen("/tmp/test.txt", "w+");
+
 	uint32_t state = 0xdeadbeefu;
 	uint32_t reg = 0xcafebabeu;
 
