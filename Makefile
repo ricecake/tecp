@@ -1,15 +1,16 @@
 CC=gcc
 INC=-Iinclude
-LDFLAGS=
+LDFLAGS=-Llib -Wl,--gc-sections
 
-CFLAGS=-Wall --std=gnu11 -O3 $(INC)
-
-SOURCES=$(shell ls src/*.c)
-OBJECTS=$(SOURCES:.c=.o)
+CFLAGS=-Wall --std=gnu11 -O3 -fdata-sections -ffunction-sections $(INC)
 
 EXECUTABLES=bin/stream
 
-all: $(SOURCES) $(EXECUTABLES)
+all: $(EXECUTABLES)
+
+clean:
+	rm src/*.o
+	rm bin/*
 
 bin/stream: src/stream.o src/scmo.o src/util.o
 	mkdir -p $(@D)
