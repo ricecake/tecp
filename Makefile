@@ -7,12 +7,12 @@ CFLAGS=-Wall --std=gnu11 -O3 $(INC)
 SOURCES=$(shell ls src/*.c)
 OBJECTS=$(SOURCES:.c=.o)
 
-EXECUTABLES=bin/scmo
+EXECUTABLES=bin/stream
 
 all: $(SOURCES) $(EXECUTABLES)
-    
-bin/scmo: src/scmo.o
-	mkdir -p $(@D)
-	$(CC) $(LDFLAGS) $< -o $@
 
-scmo.o: include/scmo.h
+bin/stream: src/stream.o src/scmo.o src/util.o
+	mkdir -p $(@D)
+	$(CC) $(LDFLAGS) $^ -o $@
+
+bin/%.o: include/%.h
