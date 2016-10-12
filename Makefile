@@ -13,7 +13,9 @@ clean:
 	rm bin/*
 
 bin/stream: src/stream.o src/scmo.o src/util.o
+
+bin/%:
 	mkdir -p $(@D)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-bin/%.o: include/%.h
+src/%.o: include/%.h
