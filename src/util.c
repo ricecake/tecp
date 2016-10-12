@@ -7,6 +7,7 @@ uint8_t parity(uint32_t val) {
 		parity ^= (val & 0x0001u);
 		val >>= 1u;
 	}
+
 	return parity;
 }
 
