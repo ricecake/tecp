@@ -18,6 +18,7 @@ int main() {
 	for(uint8_t i = 0; i < 26; i++) {
 		printf("%02X", buffer[i]);
 	}
+
 	puts("");
 
 	scmo_cipher(buffer, buffer, strlen(string) + 1, 0xdeadbeefcafebabe);
