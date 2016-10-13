@@ -2,7 +2,7 @@ CC=gcc
 INC=-Iinclude
 LDFLAGS=-Llib -Wl,--gc-sections
 
-CFLAGS=-Wall --std=gnu11 -O3 -fdata-sections -ffunction-sections $(INC)
+CFLAGS=-Wall -Werror --std=gnu11 -O3 -fdata-sections -ffunction-sections $(INC)
 
 EXECUTABLES=bin/stream
 
@@ -18,7 +18,7 @@ bin/%:
 	mkdir -p $(@D)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-src/%.o: include/%.h
+src/%.c: include/%.h
 
 tidy:
 	astyle -tyjnfpUr -k1 -A14 *.c *.h

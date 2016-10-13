@@ -1,26 +1,24 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "scmo.h"
 #include "util.h"
 
 int main() {
-	FILE* fp = fopen("/tmp/test.txt", "w+");
+	//FILE* fp = fopen("/tmp/test.txt", "w+");
 
-	uint32_t state = 0xdeadbeefu;
-	uint32_t reg = 0xcafebabeu;
+	const char * string = "This is an example string";
 
-	for(uint8_t i = 0; i < 255; i++) {
-		printf("val %08X -> %i\n", i, parity((uint32_t) i));
+	puts(string);
+	puts("\n");
+
+	uint8_t buffer[26];
+	scmo_encrypt((uint8_t*)string, buffer, strlen(string)+1, 0xdeadbeefcafebabe);
+
+	for(uint8_t i = 0; i < 26; i++) {
+		printf("%02X", buffer[i]);
 	}
-
-
-	uint16_t i = 0x00FF;
-
-	do {
-		uint32_t val = nlfsr(&reg, &state, 0x54d4d555u);
-		printf("val %08X -> %08X -> %ip == %08X\n", val, state, parity(state), val ^ 0xCAFEBEEFu);
-	}
-	while(reg != 0x0u && i--);
+	puts("\n");
 
 }
