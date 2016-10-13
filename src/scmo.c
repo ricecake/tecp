@@ -4,7 +4,7 @@
 #include "scmo.h"
 #include "util.h"
 
-uint8_t* scmo_encrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key key) {
+uint8_t* scmo_cipher(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key key) {
 	for(size_t i = 0; i < data_size; i++) {
 		uint8_t j = i % 4;
 		uint8_t c;
@@ -18,5 +18,5 @@ uint8_t* scmo_encrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key
 		buffer[i] = c ^ data[i];
 	}
 
-	return data;
+	return buffer;
 }
