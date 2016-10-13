@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <stdio.h>
 
 #include "scmo.h"
 #include "util.h"
@@ -15,7 +14,6 @@ uint8_t* scmo_encrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key
 		c = ((uint8_t*)&key)[j];
 
 		buffer[i] = c ^ data[i];
-		printf("%02X -> %02X (%c) -> %02X\n", c, data[i], data[i], buffer[i]);
 	}
 
 	return data;
