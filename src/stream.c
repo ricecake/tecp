@@ -12,7 +12,7 @@ int main() {
 
 	puts(string);
 
-	uint8_t buffer[26];
+	uint8_t* buffer = (uint8_t*)malloc(strlen(string) + 1);
 	scmo_cipher((uint8_t*)string, buffer, strlen(string) + 1, 0xdeadbeefcafebabe);
 
 	for(uint8_t i = 0; i < 26; i++) {
