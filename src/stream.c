@@ -5,23 +5,35 @@
 #include <unistd.h>
 
 #include "scmo.h"
+#include "hash.h"
 #include "util.h"
+
+md5_state_t state;
+uint8_t digest[2][16];
 
 int main(int argc, char* argv[]) {
 	//FILE* fp = fopen("/tmp/test.txt", "w+");
 
-	uint8_t* buffer = (uint8_t*)malloc(strlen(argv[1]) + 1);
+	uint8_t* buffer = (uint8_t*)malloc(strlen(argv[2]) + 1);
 
-	puts(argv[1]);
+	md5_init(&state);
+	md5_append(&state, (uint8_t*)argv[1], strlen(argv[1]));
+	md5_finish(&state, digest[0]);
 
-	scmo_cipher((uint8_t*)argv[1], buffer, strlen(argv[1]) + 1, 0xdeadbeefcafebabe);
+	strncpy((char*)digest[1], (char*)digest[0], 16);
 
-	for(uint8_t i = 0; i < strlen(argv[1]) + 1; i++) {
+	puts(argv[2]);
+
+	scmo_cipher((uint8_t*)argv[2], buffer, strlen(argv[2]) + 1, (scmo_key)digest[0]);
+
+	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
 		printf("%02X", buffer[i]);
 	}
 
 	puts("");
 
-	scmo_cipher(buffer, buffer, strlen(argv[1]) + 1, 0xdeadbeefcafebabe);
+	scmo_cipher(buffer, buffer, strlen(argv[2]) + 1, (scmo_key)digest[1]);
 	puts((char*)buffer);
+
+	return 0;
 }

@@ -10,10 +10,10 @@ uint8_t* scmo_cipher(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key 
 		uint8_t c;
 
 		if(!j) {
-			nlfsr(((uint32_t*)&key), ((uint32_t*)&key) + 1, 0x54d4d555u, parity);
+			nlfsr(&key[0], &key[1], 0x54d4d555u, parity);
 		}
 
-		c = ((uint8_t*)&key)[j];
+		c = ((uint8_t*)key)[j];
 
 		buffer[i] = c ^ data[i];
 	}

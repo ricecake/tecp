@@ -12,13 +12,14 @@ clean:
 	rm src/*.o
 	rm bin/*
 
-bin/stream: src/stream.o src/scmo.o src/util.o
+bin/stream: src/stream.o src/scmo.o src/hash.o src/util.o
 
 bin/%:
 	mkdir -p $(@D)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-src/%.c: include/%.h
+#src/%.c: include/%.h
+#	ls -lah $@
 
 tidy:
 	astyle -tyjnfpUr -k1 -A14 *.c *.h
