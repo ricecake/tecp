@@ -18,9 +18,9 @@ uint8_t* scmo_cipher(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key 
 			nlfsr(((uint32_t*)key), ((uint32_t*)key)+1, 0x54d4d555u, parity);
 		}
 
-		c = key[j];
+		c = key[j] ^ previous[i%8];
 
-		buffer[i] = (c ^ data[i]) ^ previous[i%8];
+		buffer[i] = c ^ data[i];
 		previous[i%8] = cipherText[i];
 	}
 

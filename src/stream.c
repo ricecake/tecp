@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
 
 	puts("");
 
+	buffer[4] ^= 0xFF;
 	scmo_cipher(buffer, buffer2, strlen(argv[2]) + 1, (scmo_key)digest[1], buffer);
 	puts((char*)buffer2);
 
