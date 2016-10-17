@@ -8,8 +8,9 @@
 typedef uint32_t* scmo_key;
 
 typedef struct {
-    scmo_key key,
-    uint32_t state
+    scmo_key key;
+    uint32_t state;
+    uint32_t register;
 } scmo_state;
 
 uint8_t* scmo_cipher(uint8_t*, uint8_t*, size_t, scmo_key);
