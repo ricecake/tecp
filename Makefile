@@ -18,8 +18,5 @@ bin/%:
 	mkdir -p $(@D)
 	$(CC) $(LDFLAGS) $^ -o $@
 
-#src/%.c: include/%.h
-#	ls -lah $@
-
 tidy:
 	astyle -tyjnfpUr -k1 -A14 *.c *.h
