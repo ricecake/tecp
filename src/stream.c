@@ -33,6 +33,12 @@ int main(int argc, char* argv[]) {
 
 	puts("");
 
+	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
+		printf("(%c)%02X -> %02X\n", argv[2][i], ((uint8_t*)argv[2])[i], buffer[i]);
+	}
+
+	puts("");
+
 	buffer[4] ^= 0xFF;
 	scmo_cipher(buffer, buffer2, strlen(argv[2]) + 1, (scmo_key)digest[1], buffer);
 	puts((char*)buffer2);
