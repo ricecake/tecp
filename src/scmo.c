@@ -21,7 +21,7 @@ uint8_t* scmo_cipher(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key 
 		c = key[j] ^ previous[i%8];
 
 		buffer[i] = c ^ data[i];
-		previous[i%8] = cipherText[i];
+		previous[i%8] ^= cipherText[i];
 	}
 
 	return buffer;
