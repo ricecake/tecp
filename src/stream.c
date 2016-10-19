@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
 	puts(argv[2]);
 
-	scmo_cipher((uint8_t*)argv[2], buffer, strlen(argv[2]) + 1, (scmo_key)digest[0], buffer);
+	scmo_encrypt((uint8_t*)argv[2], buffer, strlen(argv[2]) + 1, (scmo_key)digest[0]);
 
 	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
 		printf("%02X", buffer[i]);
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 	puts("");
 
 	buffer[4] ^= 0xFF;
-	scmo_cipher(buffer, buffer2, strlen(argv[2]) + 1, (scmo_key)digest[1], buffer);
+	scmo_decrypt(buffer, buffer2, strlen(argv[2]) + 1, (scmo_key)digest[1]);
 	puts((char*)buffer2);
 
 	return 0;
