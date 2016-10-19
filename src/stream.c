@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 
 	strncpy((char*)digest[1], (char*)digest[0], 16);
 
-	puts(argv[2]);
+	//puts(argv[2]);
 
 	scmo_encrypt((uint8_t*)argv[2], buffer, strlen(argv[2]) + 1, (scmo_key)digest[0]);
 
@@ -34,14 +34,12 @@ int main(int argc, char* argv[]) {
 	puts("");
 
 	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
-		printf("(%c)%02X + %02X -> %02X == %i\n", argv[2][i], ((uint8_t*)argv[2])[i], argv[2][i] ^ buffer[i], buffer[i], ((uint8_t*)argv[2])[i] - buffer[i]);
+		//printf("(%c)%02X + %02X -> %02X == %i\n", argv[2][i], ((uint8_t*)argv[2])[i], argv[2][i] ^ buffer[i], buffer[i], ((uint8_t*)argv[2])[i] - buffer[i]);
 	}
 
-	puts("");
-
-	buffer[4] ^= 0xFF;
+	//buffer[4] = 0x00;
 	scmo_decrypt(buffer, buffer2, strlen(argv[2]) + 1, (scmo_key)digest[1]);
-	puts((char*)buffer2);
+	//puts((char*)buffer2);
 
 	return 0;
 }
