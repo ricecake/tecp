@@ -16,7 +16,7 @@ uint32_t nlfsr(uint32_t* reg, uint32_t* state, uint32_t mask, uint8_t (*filter)(
 	uint8_t lsb = filter(*state);
 	*reg >>= 1;
 
-	if(lsb == 1) {
+	if(lsb) {
 		/* Apply toggle mask, value has 1 at bits corresponding
 		 * to taps, 0 elsewhere. */
 		*reg ^= mask;

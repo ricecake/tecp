@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	puts("");
 
 	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
-		printf("(%c)%02X -> %02X\n", argv[2][i], ((uint8_t*)argv[2])[i], buffer[i]);
+		printf("(%c)%02X + %02X -> %02X == %i\n", argv[2][i], ((uint8_t*)argv[2])[i], argv[2][i] ^ buffer[i], buffer[i], ((uint8_t*)argv[2])[i] - buffer[i]);
 	}
 
 	puts("");
