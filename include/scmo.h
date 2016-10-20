@@ -6,15 +6,11 @@
 
 typedef uint8_t* scmo_key;
 
-typedef struct {
-	scmo_key key;
-	uint32_t state;
-	uint32_t reg;
-} scmo_state;
+typedef struct scmo_state* scmo_state;
+
+scmo_state scmo_init(scmo_key);
 
 uint8_t* scmo_encrypt(uint8_t*, uint8_t*, size_t, scmo_key);
 uint8_t* scmo_decrypt(uint8_t*, uint8_t*, size_t, scmo_key);
-
-//uint8_t* scmo_cipher(uint8_t*, uint8_t*, size_t, scmo_key, uint8_t*);
 
 #endif

@@ -5,7 +5,12 @@
 #include "scmo.h"
 #include "util.h"
 
-#include <stdio.h>
+struct scmo_state {
+	uint8_t init_vector;
+	uint8_t byte_count;
+	uint32_t reg[2];
+	uint32_t state[2];
+};
 
 uint8_t sbox[256] = {
 	0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
@@ -39,8 +44,6 @@ uint8_t* scmo_cipher(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key 
 
 		if(!j) {
 			nlfsr(((uint32_t*)key) + 0, ((uint32_t*)key) + 1, 0x54D4D555u, parity);
-			//nlfsr(((uint32_t*)key)+2, ((uint32_t*)key)+3, 0xA3000000u, parity);
-			//nlfsr(((uint32_t*)key)+2, ((uint32_t*)key)+3, 0x54D4D555u, parity);
 			nlfsr(((uint32_t*)key) + 2, ((uint32_t*)key) + 3, 0xB4BCD35Cu, parity);
 		}
 
@@ -59,4 +62,26 @@ uint8_t* scmo_encrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key
 
 uint8_t* scmo_decrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key key) {
 	return scmo_cipher(data, buffer, data_size, key, data);
+}
+
+scmo_state scmo_init(scmo_key key) {
+	scmo_state state = malloc(sizeof * state);
+
+	if(state != NULL) {
+		state->init_vector = 0;
+		state->byte_count  = 0;
+
+		for(uint8_t k = 0; k < 8; k++) {
+			state->init_vector ^= ((uint8_t*)key)[k];
+		}
+
+		state->reg[0] = ((uint32_t*)key)[0];
+		state->reg[1] = ((uint32_t*)key)[2];
+
+		state->state[0] = ((uint32_t*)key)[1];
+		state->state[1] = ((uint32_t*)key)[3];
+
+	}
+
+	return state;
 }
