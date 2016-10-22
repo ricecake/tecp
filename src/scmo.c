@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "scmo.h"
 #include "util.h"
@@ -84,4 +85,8 @@ scmo_state scmo_init(scmo_key key) {
 	}
 
 	return state;
+}
+
+void scmo_free(scmo_state state) {
+	return free((void*) state);
 }
