@@ -25,6 +25,8 @@ int main(int argc, char* argv[]) {
 
 	//puts(argv[2]);
 
+	scmo_state cipher_state = scmo_init((scmo_key)digest[0]);
+
 	scmo_encrypt((uint8_t*)argv[2], buffer, strlen(argv[2]) + 1, (scmo_key)digest[0]);
 
 	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
@@ -40,6 +42,8 @@ int main(int argc, char* argv[]) {
 	//buffer[4] = 0x00;
 	scmo_decrypt(buffer, buffer2, strlen(argv[2]) + 1, (scmo_key)digest[1]);
 	//puts((char*)buffer2);
+
+	scmo_free(cipher_state);
 
 	return 0;
 }
