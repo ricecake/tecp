@@ -90,3 +90,6 @@ scmo_state scmo_init(scmo_key key) {
 void scmo_free(scmo_state state) {
 	return free((void*) state);
 }
+
+uint8_t* scmo_bytes(uint8_t* output, size_t count) {
+        return output;
