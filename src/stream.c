@@ -11,6 +11,8 @@
 md5_state_t state;
 uint8_t digest[2][16];
 
+scmo_state cipher_state[2];
+
 int main(int argc, char* argv[]) {
 	//FILE* fp = fopen("/tmp/test.txt", "w+");
 
@@ -25,9 +27,10 @@ int main(int argc, char* argv[]) {
 
 	//puts(argv[2]);
 
-	scmo_state cipher_state = scmo_init((scmo_key)digest[0]);
+	cipher_state[0] = scmo_init((scmo_key)digest[0]);
+	cipher_state[1] = scmo_init((scmo_key)digest[0]);
 
-	scmo_encrypt((uint8_t*)argv[2], buffer, strlen(argv[2]) + 1, (scmo_key)digest[0]);
+	scmo_encrypt((uint8_t*)argv[2], buffer, strlen(argv[2]) + 1, cipher_state[0]);
 
 	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
 		printf("%02X", buffer[i]);
@@ -36,14 +39,15 @@ int main(int argc, char* argv[]) {
 	puts("");
 
 	for(uint8_t i = 0; i < strlen(argv[2]) + 1; i++) {
-		//printf("(%c)%02X + %02X -> %02X == %i\n", argv[2][i], ((uint8_t*)argv[2])[i], argv[2][i] ^ buffer[i], buffer[i], ((uint8_t*)argv[2])[i] - buffer[i]);
+		printf("(%c)%02X + %02X -> %02X == %i\n", argv[2][i], ((uint8_t*)argv[2])[i], argv[2][i] ^ buffer[i], buffer[i], ((uint8_t*)argv[2])[i] - buffer[i]);
 	}
 
 	//buffer[4] = 0x00;
-	scmo_decrypt(buffer, buffer2, strlen(argv[2]) + 1, (scmo_key)digest[1]);
+	scmo_decrypt(buffer, buffer2, strlen(argv[2]) + 1, cipher_state[1]);
 	//puts((char*)buffer2);
 
-	scmo_free(cipher_state);
+	scmo_free(cipher_state[0]);
+	scmo_free(cipher_state[1]);
 
 	return 0;
 }

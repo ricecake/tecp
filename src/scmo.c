@@ -32,37 +32,31 @@ uint8_t sbox[256] = {
 	0x8C, 0xA1, 0x89, 0x0D, 0xBF, 0xE6, 0x42, 0x68, 0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16
 };
 
-uint8_t* scmo_cipher(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key key, uint8_t* cipherText) {
-	uint8_t previous = 0x00;
-
-	for(uint8_t k = 0; k < 8; k++) {
-		previous ^= ((uint8_t*)key)[k];
-	}
-
+uint8_t* scmo_cipher(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_state cipher_state, uint8_t* cipherText) {
 	for(size_t i = 0; i < data_size; i++) {
-		uint8_t j = i % 4;
-		uint8_t c;
+		uint8_t cipher_char;
 
-		if(!j) {
-			nlfsr(((uint32_t*)key) + 0, ((uint32_t*)key) + 1, 0x54D4D555u, parity);
-			nlfsr(((uint32_t*)key) + 2, ((uint32_t*)key) + 3, 0xB4BCD35Cu, parity);
+		if(!cipher_state->byte_count) {
+			nlfsr(&cipher_state->reg[0], &cipher_state->state[0], 0x54D4D555u, parity);
+			nlfsr(&cipher_state->reg[1], &cipher_state->state[1], 0xB4BCD35Cu, parity);
 		}
 
-		c = key[j] ^ key[j + 8] ^ previous;
+		cipher_char = ((uint8_t*)cipher_state->reg+0)[cipher_state->byte_count] ^ ((uint8_t*)cipher_state->reg+1)[cipher_state->byte_count] ^ cipher_state->init_vector;
+		cipher_state->byte_count = (cipher_state->byte_count + 1) % 4;
 
-		buffer[i] = sbox[c] ^ data[i];
-		previous = cipherText[i];
+		buffer[i] = sbox[cipher_char] ^ data[i];
+		cipher_state->init_vector = cipherText[i];
 	}
 
 	return buffer;
 }
 
-uint8_t* scmo_encrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key key) {
-	return scmo_cipher(data, buffer, data_size, key, buffer);
+uint8_t* scmo_encrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_state cipher_state) {
+	return scmo_cipher(data, buffer, data_size, cipher_state, buffer);
 }
 
-uint8_t* scmo_decrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_key key) {
-	return scmo_cipher(data, buffer, data_size, key, data);
+uint8_t* scmo_decrypt(uint8_t* data, uint8_t* buffer, size_t data_size, scmo_state cipher_state) {
+	return scmo_cipher(data, buffer, data_size, cipher_state, data);
 }
 
 scmo_state scmo_init(scmo_key key) {
